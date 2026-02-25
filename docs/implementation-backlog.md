@@ -32,6 +32,20 @@ Acceptance:
 - Non-admin users can only read approved active foods.
 - Users can submit foods; admins can review/approve/reject.
 
+### Epic 2.1: External catalog ingestion + barcode identity
+
+1. Select primary pet-food source (Open Pet Food Facts) and define licensing + attribution requirements.
+2. Add import pipeline (one-time bootstrap + scheduled sync) to upsert foods from external datasets/APIs.
+3. Add source metadata fields (`source`, `source_id`, `last_synced_at`, `license_ref`) for traceability.
+4. Add normalized barcode handling (digit-only normalization, check-digit validation, unique lookup key).
+5. Add conflict handling for duplicate barcode collisions and route unresolved conflicts to moderation.
+6. Add fallback lookup path for unknown barcodes before showing "not found".
+
+Acceptance:
+- Catalog can be seeded in bulk from an external source without manual entry.
+- Barcode lookup resolves against normalized unique keys with deterministic conflict behavior.
+- Source provenance and license/attribution metadata are available for imported records.
+
 ### Epic 3: Scan flow scaffold (mobile)
 
 1. Add dedicated `Scan` tab.
@@ -107,3 +121,4 @@ Acceptance:
 - Keep scanner flow primary in information architecture (`Scan` as first-class tab).
 - Keep logging intentionally lightweight and non-blocking.
 - Do not expose pending/unverified community data by default to all users.
+- Prefer official datasets/APIs over scraping; only scrape when terms explicitly allow it.
